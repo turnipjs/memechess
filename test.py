@@ -1,11 +1,13 @@
 import datamodel.game, datamodel.pawn
 
 g = datamodel.game.Game()
-p = datamodel.pawn.Pawn(g, [0, 0, 0], datamodel.game.Color.WHITE)
+p = datamodel.pawn.Pawn(g, [1, 1, 0], datamodel.game.Color.BLACK)
+b = datamodel.pawn.Pawn(g, [2, 0, 0], datamodel.game.Color.WHITE)
 g.add_piece(p)
-print(g.get_piece_at([0, 0, 0]))
+g.add_piece(b)
 
+print(g.pieces)
 actions = p.get_actions()
 print(actions)
-p.apply_action(actions[0])
-print(p)
+p.apply_action(actions[2])
+print(g.pieces)

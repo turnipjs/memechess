@@ -6,25 +6,21 @@ class Piece:
 		self.color = color
 
 	@property
-	def x(self): return self.pos[0]
-	@x.setter
-	def x(self, x): self.pos[0]=x
-
-	@property
-	def y(self): return self.pos[1]
-	@y.setter
-	def y(self, x): self.pos[1]=x
-
-	@property
-	def z(self): return self.pos[2]
-	@z.setter
-	def z(self, x): self.pos[2]=x
+	def pos(self): return (self.x, self.y, self.z)
+	@pos.setter
+	def pos(self, new):
+		self.x, self.y, self.z = new
 
 	def __str__(self):
 		return "<"+type(self).__name__+" "+str(self.pos)+" "+str(self.color)+">"
+
+	def __repr__(self): return str(self)
 
 	def get_actions(self):
 		return []
 
 	def apply_action(self):
 		raise NotImplemented()
+
+	def die(self):
+		self.game.pieces.remove(self)
