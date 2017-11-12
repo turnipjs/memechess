@@ -1,22 +1,15 @@
 from .piece import Piece
-from .game import Action
-
+from .game import Action, MoveResult
 
 class Knight(Piece):
     def get_actions(self):
         actions = []
 
-        if self.game.is_valid_empty_space((self.x + 1, self.y - 2, self.z)):
-            actions.append(Action("move", self.x + 1, self.y - 2 , self.z))
-        if self.game.is_valid_full_enemy_space((self.x + 1, self.y - 2, self.z), self.color):
-            actions.append(Action("move_capture", self.x + 1, self.y - 2))
-
-        if self.game.is_valid_empty_space((self.x + 2, self.y - 1, self.z)):
-            actions.append(Action("move", self.x + 2, self.y - 1, self.z))
-        if self.game.is_valid_full_enemy_space((self.x + 2, self.y - 1, self.z), self.color):
-            actions.append(Action("move_capture", self.x +2, self.y - 1))
-
-
+        for x_sign in (-1, 1):
+            for y_sign in (-1, 1):
+                res = self.game.step_move_to(self, self.pos, (0, 0, 1))
+                if res.type == MoveResult.Type.REGULAR:
+                    res = self.game.step_move_to(self, self.pos, (0, 0, 1))
 
         return actions
 
@@ -24,6 +17,4 @@ class Knight(Piece):
         if action.name == "move_capture":
             self.game.get_piece_at((action.x, action.y, action.z)).die()
         if action.name == "move" or action.name == "move_capture":
-            self.x = action.x
-            self.y = action.y
-            self.z = action.z
+            self.pos = action[1:]

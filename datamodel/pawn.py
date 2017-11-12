@@ -28,6 +28,4 @@ class Pawn(Piece):
 		if action.name == "move_capture":
 			self.game.get_piece_at((action.x, action.y, action.z)).die()
 		if action.name=="move" or action.name == "move_capture":
-			self.x=action.x
-			self.y=action.y
-			self.z=action.z
+			self.pos = action[1:]
