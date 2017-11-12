@@ -1,8 +1,10 @@
 from .piece import Piece
-from .game import Action, MoverResult
+from .game import Action, MoveResult
 
 class Bowman(Piece):
     def get_actions(self):
+        actions = []
+        
         for vector in ((0, 1, 0), (1, 0, 0), (1, 1, 0), (0, -1, 0), (-1, 0, 0),
                        (-1, -1, 0), (1, -1, 0), (-1, 1, 0)):
             res = self.game.step_move_to(self, self.pos, vector)
