@@ -1,5 +1,5 @@
 import pygame
-from datamodel import game, pawn, rook, bishop, queen
+from datamodel import game, pawn, rook, bishop, queen, portal, king
 
 SQUARE_SIZE=50
 
@@ -7,10 +7,14 @@ pygame.init()
 screen = pygame.display.set_mode((20*SQUARE_SIZE, 20*SQUARE_SIZE))
 
 board = game.Game()
-a=queen.Queen(board, (5, 5, 0), game.Color.BLACK)
+a=bishop.Bishop(board, (5, 5, 0), game.Color.WHITE)
 board.add_piece(a)
-b=pawn.Pawn(board, (6, 4, 0), game.Color.WHITE)
+b=portal.PortalExit(board, (6, 3, 0), game.Color.WHITE)
 board.add_piece(b)
+
+board.add_piece(portal.PortalEntrance(board, (10, 10, 0), game.Color.WHITE, b))
+
+[board.add_piece(i) for i in portal.make_cave_pair(board, (13, 13, 0), (2, 2, 0))]
 
 SELECTED_PIECE = a
 
@@ -30,7 +34,7 @@ while run:
 			pygame.draw.rect(screen, (0,255,0), (x*SQUARE_SIZE, y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 1)
 
 	for piece in board.pieces:
-		pygame.draw.rect(screen, [255,0,0] if piece.color == game.Color.BLACK else [0,0,255],
+		pygame.draw.rect(screen, [255,0,0] if piece.color == game.Color.BLACK else ([0,0,255] if piece.color == game.Color.WHITE else (100,100,100)),
 			((piece.x*SQUARE_SIZE)+1, (piece.y*SQUARE_SIZE)+1, SQUARE_SIZE-2, SQUARE_SIZE-2), 0)
 		screen.blit(font.render(type(piece).__name__, False, (255,255,255)),
 			(piece.x*SQUARE_SIZE, piece.y*SQUARE_SIZE))

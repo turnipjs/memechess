@@ -8,13 +8,21 @@ class Color(enum.Enum):
 	BLACK=1
 	WHITE=2
 
-class MoveResultType(enum.Enum):
-	INVALID=0
-	CAPTURE=1
-	REGULAR=2
+#MoveResult = collections.namedtuple("MoveResult", ["type", "pos"])
+class MoveResult:
+	class Type(enum.Enum):
+		INVALID=0
+		CAPTURE=1
+		REGULAR=2
+		
+	def __init__(self, type, pos, ends_motion=False):
+		self.type = type
+		self.pos = pos
+		self.ends_motion = ends_motion
 
-MoveResult = collections.namedtuple("MoveResult", ["type", "pos"])
-MoveResult.Type = MoveResultType
+	def __str__(self):
+		return "MoveResult("+",".join(str(i) for i in (self.type, self.pos, self.ends_motion))+")"
+	def __repr__(self): return str(self)
 
 class Game:
 	def __init__(self):
@@ -63,11 +71,11 @@ class Game:
 			return MoveResult(MoveResult.Type.REGULAR, new_location)
 		if self.has_piece(new_location):
 			target = self.get_piece_at(new_location)
-			if target.color == Color.NONE or target.color == peice.color:
+			if peice.can_capture and target.color != peice.color and target.can_be_captured: #enemy peice
+				return MoveResult(MoveResult.Type.CAPTURE, new_location)
+			elif target.color == Color.NONE or target.color == peice.color:
 				if target.can_land_on:
-					return MoveResult(MoveResult.Type.REGULAR, target.step_move_into(peice, pos, direction))
+					return target.step_move_into(peice, pos, direction)
 				else:
 					return MoveResult(MoveResult.Type.INVALID, 0)
-			elif peice.can_capture: #enemy peice
-				return MoveResult(MoveResult.Type.CAPTURE, new_location)
 		return MoveResult(MoveResult.Type.INVALID, 0)

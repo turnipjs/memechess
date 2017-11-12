@@ -14,6 +14,8 @@ class Rook(Pawn):
 					break
 				elif res.type == MoveResult.Type.REGULAR:
 					actions.append(Action("move", *res.pos))
+					if res.ends_motion:
+						break
 				elif res.type == MoveResult.Type.CAPTURE:
 					actions.append(Action("move_capture", *res.pos))
 					break
