@@ -1,5 +1,5 @@
 from .piece import Piece
-from .game import Action, Color
+from .game import Action, Color, MoveResult
 
 
 class Pawn(Piece):
@@ -8,14 +8,19 @@ class Pawn(Piece):
 			direction = 1
 		else:
 			direction = -1
-		actions = []#Action("move", self.x, self.y+1, self.z)]
+		actions = []
 
-		if self.game.is_valid_empty_space((self.x - direction, self.y, self.z)): #moves left or right
-			actions.append(Action("move", self.x - direction, self.y, self.z))
-		if self.game.is_valid_empty_space((self.x, self.y + direction, self.z)): #moves up or down
-			actions.append(Action("move", self.x, self.y + direction, self.z))
-		if self.game.is_valid_full_enemy_space((self.x -direction, self.y +direction, self.z), self.color): #captures diagonally
-			actions.append(Action("move_capture", self.x - direction, self.y +direction, self.z))
+		res = self.game.step_move_to(self, self.pos, (-direction, 0, 0))
+		if res.type == MoveResult.Type.REGULAR:
+			actions.append(Action("move", *res.pos))
+
+		res = self.game.step_move_to(self, self.pos, (0, direction, 0))
+		if res.type == MoveResult.Type.REGULAR:
+			actions.append(Action("move", *res.pos))
+
+		res = self.game.step_move_to(self, self.pos, (-direction, direction, 0))
+		if res.type == MoveResult.Type.CAPTURE:
+			actions.append(Action("move_capture", *res.pos))
 
 		return actions
 

@@ -1,52 +1,22 @@
 from .piece import Piece
-from .game import Action
+from .pawn import Pawn
+from .game import Action, MoveResult
 
 
-class Bishop(Piece):
+class Bishop(Pawn):
     def get_actions(self):
         actions = []
-        for i in range(1, 19):
-            if self.game.is_valid_empty_space((self.x + i, self.y + i, self.z)):
-                actions.append(Action("move", self.x + i, self.y + i, self.z))
-            elif self.game.is_valid_full_enemy_space((self.x + i, self.y + i, self.z), self.color):
-                actions.append(Action("move_capture", self.x + i, self.y + i, self.z))
-                break
-            else:
-                break
-
-        for i in range(1, 19):
-            if self.game.is_valid_empty_space((self.x - i, self.y - i, self.z)):
-                actions.append(Action("move", self.x - i, self.y - i, self.z))
-            elif self.game.is_valid_full_enemy_space((self.x - i, self.y - i, self.z), self.color):
-                actions.append(Action("move_capture", self.x - i, self.y - i, self.z))
-                break
-            else:
-                break
-
-        for i in range(1, 19):
-            if self.game.is_valid_empty_space((self.x - i, self.y + i, self.z)):
-                actions.append(Action("move", self.x - i, self.y + i, self.z))
-            elif self.game.is_valid_full_enemy_space((self.x - i, self.y + i, self.z), self.color):
-                actions.append(Action("move_capture", self.x - i, self.y + i, self.z))
-                break
-            else:
-                break
-
-        for i in range(1, 19):
-            if self.game.is_valid_empty_space((self.x + i, self.y - i, self.z)):
-                actions.append(Action("move", self.x + i, self.y - i, self.z))
-            elif self.game.is_valid_full_enemy_space((self.x + i, self.y - i, self.z), self.color):
-                actions.append(Action("move_capture", self.x + i, self.y - i, self.z))
-                break
-            else:
-                break
+        
+        for vector in ((1, 1, 0), (1, -1, 0), (-1, 1, 0), (-1, -1, 0)):
+            res = MoveResult(MoveResult.Type.REGULAR, self.pos)
+            while True:
+                res = self.game.step_move_to(self, res.pos, vector)
+                if res.type == MoveResult.Type.INVALID:
+                    break
+                elif res.type == MoveResult.Type.REGULAR:
+                    actions.append(Action("move", *res.pos))
+                elif res.type == MoveResult.Type.CAPTURE:
+                    actions.append(Action("move_capture", *res.pos))
+                    break
 
         return actions
-
-    def apply_action(self, action):
-        if action.name == "move_capture":
-            self.game.get_piece_at((action.x, action.y, action.z)).die()
-        if action.name == "move" or action.name == "move_capture":
-            self.x = action.x
-            self.y = action.y
-            self.z = action.z

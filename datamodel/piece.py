@@ -1,5 +1,8 @@
 
 class Piece:
+	can_land_on = False
+	can_capture = True
+
 	def __init__(self, game, pos, color):
 		self.game = game
 		self.pos = pos
@@ -24,3 +27,6 @@ class Piece:
 
 	def die(self):
 		self.game.pieces.remove(self)
+
+	def step_move_into(self, peice, pos, direction):
+		raise NotImplemented()
