@@ -35,8 +35,5 @@ class Piece:
 
 	def on_owner_turn_start(self):
 		pass
-<<<<<<< HEAD
-
+		
 	def get_2nd_text(self): return ""
-=======
->>>>>>> origin/master
