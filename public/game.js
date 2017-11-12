@@ -1,8 +1,8 @@
-function init() {
-  var stage = new createjs.Stage("board");
-}
+$(document).ready(() => {
+  
+});
 
 function updateLoop() {
   $.
-  setTimeout(updateLoop, 1000);
+  setTimeout(updateLoop, 500);
 }
