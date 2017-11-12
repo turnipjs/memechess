@@ -5,9 +5,9 @@ from .game import Action, Color, MoveResult
 class Pawn(Piece):
 	def _get_actions(self):
 		if self.color == Color.WHITE:
-			direction = 1
-		else:
 			direction = -1
+		else:
+			direction = 1
 		actions = []
 
 		res = self.game.step_move_to(self, self.pos, (-direction, 0, 0))
