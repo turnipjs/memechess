@@ -3,6 +3,7 @@ class Piece:
 	can_land_on = False
 	can_capture = True
 	can_be_captured = True
+	can_move = True
 
 	def __init__(self, game, pos, color):
 		self.game = game
