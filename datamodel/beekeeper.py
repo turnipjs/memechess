@@ -5,11 +5,10 @@ from .queen import Queen
 import random
 
 class Beekeeper(Piece):
-	def get_actions(self):
+	def _get_actions(self):
 		actions = [Action("release_swarm", *self.pos)]
-
 		for vector in ((0, 1, 0), (1, 0, 0), (1, 1, 0), (0, -1, 0), (-1, 0, 0),
-					   (-1, -1, 0), (1, -1, 0), (-1, 1, 0)):
+				   (-1, -1, 0), (1, -1, 0), (-1, 1, 0)):
 			res = self.game.step_move_to(self, self.pos, vector)
 			if res.type == MoveResult.Type.REGULAR:
 				actions.append(Action("move", *res.pos))
