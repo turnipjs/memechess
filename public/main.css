@@ -44,7 +44,7 @@ div#ocp-table {
 
 div#board {
   grid-area: board;
-  background: white;
+  background: ;
 }
 
 div#board-table {
@@ -55,7 +55,7 @@ td {
   width: 5%;
   height: 5%;
   border: 1px solid black;
-  
+  background: white;
 }
 
 /*td:hover {
@@ -80,6 +80,6 @@ div#reference-contents {
 
 }
 
-.red {
-  background: red;
+.highlight {
+  background: grey;
 }
