@@ -10,17 +10,18 @@ class Pawn(Piece):
 			direction = -1
 		actions = []
 
-		res = self.game.step_move_to(self, self.pos, (-direction, 0, 0))
-		if res.type == MoveResult.Type.REGULAR:
-			actions.append(Action("move", *res.pos))
+		if can_move == True:
+			res = self.game.step_move_to(self, self.pos, (-direction, 0, 0))
+			if res.type == MoveResult.Type.REGULAR:
+				actions.append(Action("move", *res.pos))
 
-		res = self.game.step_move_to(self, self.pos, (0, direction, 0))
-		if res.type == MoveResult.Type.REGULAR:
-			actions.append(Action("move", *res.pos))
+			res = self.game.step_move_to(self, self.pos, (0, direction, 0))
+			if res.type == MoveResult.Type.REGULAR:
+				actions.append(Action("move", *res.pos))
 
-		res = self.game.step_move_to(self, self.pos, (-direction, direction, 0))
-		if res.type == MoveResult.Type.CAPTURE:
-			actions.append(Action("move_capture", *res.pos))
+			res = self.game.step_move_to(self, self.pos, (-direction, direction, 0))
+			if res.type == MoveResult.Type.CAPTURE:
+				actions.append(Action("move_capture", *res.pos))
 
 		return actions
 
