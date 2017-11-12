@@ -1,0 +1,62 @@
+:root {
+  --main-blue: #CAD3F9;
+  --main-salmon: #F9DECA;
+  --main-
+}
+
+body {
+  background-color: #fedcba;
+  font-family: monospace;
+}
+
+#page {
+  width: 91vw;
+  display: grid;
+  grid-template-columns: 25vw 65vw;
+  grid-template-rows: 50px auto 50px;
+  grid-template-areas:
+    "logo header"
+    "sidebar content"
+    "footer footer";
+  grid-column-gap: 1vw;
+  grid-row-gap: 1vw;
+  margin: auto;
+}
+
+#header {
+  background-color: #ffe;
+  grid-area: header;
+}
+
+#sidebar {
+  background-color: #ffe;
+  grid-area: sidebar;
+}
+
+#content {
+  background-color: #fff;
+  grid-area: content;
+}
+
+#footer {
+  background-color: #ffe;
+  grid-area: footer;
+}
+
+#sidebar > a:link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  text-align: center;
+  font-size: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+#sidebar > a:hover {
+  background-color: #eee;
+}
+
+#sidebar > a:active {
+  background-color: white;
+}
