@@ -10,31 +10,32 @@ class Pope(King):
 		self.attacking_turns_remaining = 3
 
 	def get_actions(self):
-		if self.attacking:
-			return []
-		if not self.is_jetpack:
-			return King.get_actions(self) + [Action("pray_for_jetpack", *self.pos)]
-		else:
-			actions = [action for action in Queen.get_actions(self) if action.name!="move_capture"]
-			enemies = []
-			to_remove = set()
-			for action in actions:
+		if can_move == True:
+			if self.attacking:
+				return []
+			if not self.is_jetpack:
+				return King.get_actions(self) + [Action("pray_for_jetpack", *self.pos)]
+			else:
+				actions = [action for action in Queen.get_actions(self) if action.name!="move_capture"]
+				enemies = []
+				to_remove = set()
+				for action in actions:
+					for z in range(5):
+						if self.game.is_valid_full_enemy_space((action.x, action.y, z), self.color):
+							enemies.append((action.x, action.y, z))
+							to_remove = to_remove | {action}
+				for a in to_remove:
+					actions.remove(a)
+				for e in enemies:
+					actions.append(Action("pope_attack", *e))
+
+				ok = True
 				for z in range(5):
-					if self.game.is_valid_full_enemy_space((action.x, action.y, z), self.color):
-						enemies.append((action.x, action.y, z))
-						to_remove = to_remove | {action}
-			for a in to_remove:
-				actions.remove(a)
-			for e in enemies:
-				actions.append(Action("pope_attack", *e))
+					if not self.game.is_valid_empty_space((self.x, self.y, z)):
+						ok = False
 
-			ok = True
-			for z in range(5):
-				if not self.game.is_valid_empty_space((self.x, self.y, z)):
-					ok = False
-
-			if ok:
-				actions.append(Action("damn_jetpack", *self.pos))
+				if ok:
+					actions.append(Action("damn_jetpack", *self.pos))
 			return actions
 
 	def apply_action(self, action):
