@@ -3,6 +3,9 @@ import collections
 
 Action = collections.namedtuple("Action", ["name", "x", "y", "z"])
 
+class ILLEGALPOS_OOB:pass
+class ILLEGALPOS_FULL:pass
+
 class Color(enum.Enum):
 	NONE=0
 	BLACK=1
@@ -82,8 +85,8 @@ class Game:
 				if target.can_land_on:
 					return target.step_move_into(peice, pos, direction)
 				else:
-					return MoveResult(MoveResult.Type.INVALID, 0)
-		return MoveResult(MoveResult.Type.INVALID, 0)
+					return MoveResult(MoveResult.Type.INVALID, ILLEGALPOS_FULL())
+		return MoveResult(MoveResult.Type.INVALID, ILLEGALPOS_OOB())
 
 	def start_turn(self, color):
 		for piece in self.pieces:

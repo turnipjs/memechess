@@ -34,3 +34,5 @@ class Piece:
 
 	def on_owner_turn_start(self):
 		pass
+
+	def get_2nd_text(self): return ""

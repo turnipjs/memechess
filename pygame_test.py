@@ -1,5 +1,5 @@
 import pygame
-from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman, beekeeper, knight
+from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman, beekeeper, knight, highrise
 
 
 SQUARE_SIZE=50
@@ -8,9 +8,9 @@ pygame.init()
 screen = pygame.display.set_mode((20*SQUARE_SIZE, 20*SQUARE_SIZE))
 
 board = game.Game()
-a=knight.Knight(board, (5, 5, 0), game.Color.WHITE)
+a=highrise.Highrise(board, (5, 5, 0), game.Color.WHITE)
 board.add_piece(a)
-b=portal.PortalExit(board, (6, 3, 0), game.Color.WHITE)
+b=highrise.Highrise(board, (6, 3, 0), game.Color.WHITE)
 board.add_piece(b)
 
 board.add_piece(portal.PortalEntrance(board, (10, 10, 0), game.Color.WHITE, b))
@@ -66,6 +66,8 @@ while run:
 			((piece.x*SQUARE_SIZE)+1, (piece.y*SQUARE_SIZE)+1, SQUARE_SIZE-2, SQUARE_SIZE-2), 0)
 		screen.blit(font.render(type(piece).__name__, False, (255,255,255)),
 			(piece.x*SQUARE_SIZE, piece.y*SQUARE_SIZE))
+		screen.blit(font.render(piece.get_2nd_text(), False, (255, 255, 255)),
+					(piece.x * SQUARE_SIZE, (piece.y * SQUARE_SIZE)+40))
 
 	actions = selected_piece.get_actions()
 	print("\n"*100)
