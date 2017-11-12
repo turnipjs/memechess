@@ -1,17 +1,42 @@
 var newBoard = null;
 var currentBoard = null;
 var requestDelayCounter = 0;
+var currentSelected = [null,null];
 
 function hoverSelect(x, y) {
-  $("#" + y + "-" + x).attr("style", "background: grey;");
+  if (currentSelected[0] != x || currentSelected[1] != y) {
+    $("#" + y + "-" + x).attr("style", "background: #ffffe0;");
+  }
 }
 
 function clickSelect(x, y) {
-  $("#" + y + "-" + x).attr("style", "background: black;");
+  $("#" + currentSelected[1] + "-" + currentSelected[0]).attr("style", "background: white;");
+  $("#" + y + "-" + x).attr("style", "background: yellow;");
+  let i = 0;
+  let searching = true;
+  let found;
+  while (searching) {
+    eval("found = piece" + i + ";");
+    i++;
+    if (found.pos[0] == x && found.pos[1] == y) {
+      searching = false;
+    }
+  }
+  console.log("found: " + found.pos[0] + "-" + found.pos[1]);
+  for (var move in found.moves) {
+    if (move[0] == "move_capture") {
+      $("#" + move[2] + "-" + move[1]).attr("style", "background: red;");
+    } else if (move[0] == "move") {
+      $("#" + move[2] + "-" + move[1]).attr("style", "background: green;");
+    }
+  }
+  currentSelected = [x,y];
 }
 
-function clearSelection(x, y) {
-  $("#" + y + "-" + x).attr("style", "background: white;");
+function clearHighlightSelection(x, y) {
+  if (currentSelected[0] != x || currentSelected[1] != y) {
+    $("#" + y + "-" + x).attr("style", "background: white;");
+  }
 }
 
 
@@ -19,14 +44,15 @@ $(document).ready(() => {
   // adds event listeners
   for (var i = 0; i < 20; i++) {
     for (var j = 0; j < 20; j++) {
-      $("#" + j + "-" + i).hover(() => {
-        hoverSelect(i,j);
+      eval(`$("#" + ${j} + "-" + ${i}).hover(() => {
+        hoverSelect(${i},${j});
       }, () => {
-        clearSelection(i,j);
+        clearHighlightSelection(${i},${j});
       });
-      $("#" + j + "-" + i).click(() => {
-        clickSelect(i,j)
-      });
+      $("#" + ${j} + "-" + ${i}).click(() => {
+        console.log("click detected" + ${j} + "-" + ${i});
+        clickSelect(${i},${j})
+      });`);
     }
   }
   loop = true;
@@ -87,6 +113,21 @@ function requestLoop() {
         ["move_capture", 5, 5, 0],
         ["move", 5, 4, 0],
         ["move", 6, 5, 0]
+      ]
+    }, {
+      type: "bishop",
+      color: "WHITE",
+      pos: [12, 12, 0],
+      moves: [
+        ["move_capture", 5, 5, 0]
+        ["move", 11, 13, 0]
+        ["move", 10, 14, 0]
+        ["move", 13, 13, 0]
+        ["move", 14, 14, 0]
+        ["move", 11, 11, 0]
+        ["move", 10, 10, 0]
+        ["move", 13, 11, 0]
+        ["move", 10, 14, 0]
       ]
     }]
   };
