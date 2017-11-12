@@ -48,6 +48,7 @@ class Pope(King):
 			self.attacking = self.game.get_piece_at(action[1:])
 			self.attacking_turns_remaining = 3
 			self.attacking.z = -1
+			self.attacking.frozen = True
 			self.pos = self.attacking.pos
 			self.z = 0
 		if action.name == "move_capture":
