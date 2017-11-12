@@ -9,7 +9,7 @@ class Pope(King):
 		self.attacking = None
 		self.attacking_turns_remaining = 3
 
-	def get_actions(self):
+	def _get_actions(self):
 		if self.attacking:
 			return []
 		if not self.is_jetpack:
@@ -35,7 +35,7 @@ class Pope(King):
 
 			if ok:
 				actions.append(Action("damn_jetpack", *self.pos))
-			return actions
+		return actions
 
 	def apply_action(self, action):
 		if action.name == "pray_for_jetpack":
@@ -48,6 +48,7 @@ class Pope(King):
 			self.attacking = self.game.get_piece_at(action[1:])
 			self.attacking_turns_remaining = 3
 			self.attacking.z = -1
+			self.attacking.frozen = True
 			self.pos = self.attacking.pos
 			self.z = 0
 		if action.name == "move_capture":

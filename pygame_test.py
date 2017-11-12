@@ -37,8 +37,6 @@ while run:
 			my/=SQUARE_SIZE
 			mx = int(mx)
 			my = int(my)
-			# print(e, e.button)
-			# input()
 			if e.button==1:
 				for z in range(100):
 					print((mx, my, z))
@@ -46,6 +44,8 @@ while run:
 						print("sel")
 						selected_piece = board.get_piece_at((mx, my, z))
 						break
+			elif e.button==2:
+				board.add_piece(eval(input("$"))(board, (mx, my, 0), game.Color.WHITE))
 			elif e.button==3:
 				board.start_turn(game.Color.WHITE)
 				for action in actions:

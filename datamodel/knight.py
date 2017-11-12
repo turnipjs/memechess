@@ -3,7 +3,7 @@ from .pawn import Pawn
 from .game import Action, MoveResult
 
 class Knight(Pawn):
-    def get_actions(self):
+    def _get_actions(self):
         actions = []
         x = (1, 0, 0)
         y = (0, 1, 0)
