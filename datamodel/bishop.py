@@ -4,9 +4,8 @@ from .game import Action, MoveResult
 
 
 class Bishop(Pawn):
-    def get_actions(self):
+    def _get_actions(self):
         actions = []
-        
         for vector in ((1, 1, 0), (1, -1, 0), (-1, 1, 0), (-1, -1, 0)):
             res = MoveResult(MoveResult.Type.REGULAR, self.pos)
             while True:

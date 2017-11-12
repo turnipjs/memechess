@@ -12,20 +12,27 @@ function updateLoop() {
   // updates board
   $.ajax({url: "boardState.json", success: (result) => {
     newBoard = JSON.parse(result);
-    if (newBoard == oldBoard) {
+    if (newBoard == currentBoard) {
       newBoard = null;
     }
   }});
   if (newBoard) {
+    let i = 0;
     for (var piece in newBoard.pieces) {
-      var color = piece.color;
-      var type = piece.type;
-      var x = piece.pos[0];
-      var y = piece.pos[1];
-      for (var move in piece.move)
-      var moves = piece.moves
+      eval(`piece${i} = {};`);
+      eval(`var piece${i}.color = piece.color`);
+      eval(`var piece${i}.type = piece.type`);
+      eval(`var piece${i}.x = piece.pos[0]`);
+      eval(`var piece${i}.y = piece.pos[1]`);
+      let j = 0;
+      for (var move in piece.moves) {
+        eval(`piece${i}.move${j} = piece.moves[${j}]`);
+        ++j;
+      }
+      $(`"tr." + piece${i}.y + " > td." + piece${i}.x`).innerHTML;
+      ++i;
     }
-    oldBoard = newBoard;
+    currentBoard = newBoard;
     newBoard = null;
   }
   // makes visuals

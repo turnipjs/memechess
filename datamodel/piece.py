@@ -8,6 +8,7 @@ class Piece:
 		self.game = game
 		self.pos = pos
 		self.color = color
+		self.frozen = False
 
 	@property
 	def pos(self): return (self.x, self.y, self.z)
@@ -21,7 +22,7 @@ class Piece:
 	def __repr__(self): return str(self)
 
 	def get_actions(self):
-		return []
+		return [] if self.frozen else self._get_actions()
 
 	def apply_action(self):
 		raise NotImplemented()
@@ -31,3 +32,6 @@ class Piece:
 
 	def step_move_into(self, peice, pos, direction):
 		raise NotImplemented()
+
+	def on_owner_turn_start(self):
+		pass

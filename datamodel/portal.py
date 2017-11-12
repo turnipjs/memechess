@@ -3,9 +3,8 @@ from .game import Action, MoveResult, Color
 
 class PortalExit(Piece):
 	can_capture = False
-	can_be_captured = False
 
-	def get_actions(self):
+	def _get_actions(self):
 		actions = []
 
 		for vector in ((0, 1, 0), (1, 0, 0), (1, 1, 0), (0, -1, 0), (-1, 0, 0),
@@ -37,6 +36,7 @@ class PortalEntrance(PortalExit):
 
 class CavePortal(PortalEntrance):
 	preserves_speed = True
+	can_be_captured = False
 
 def make_cave_pair(game, pos1, pos2):
 	a = CavePortal(game, pos1, Color.NONE, None)
