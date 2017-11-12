@@ -1,7 +1,11 @@
+body {
+  background: black;
+}
+
 div#game {
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr;
-  grid-template-rows: 1fr 3fr 3fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr auto auto 1fr;
   grid-template-areas:
     "info   opp-cap-pieces  reference"
     "info   board           reference"
@@ -13,7 +17,7 @@ div#game {
 
 div#info-pane {
   grid-area: info;
-  background: blue;
+  background: white;
 }
 
 div#info-contents {
@@ -22,7 +26,7 @@ div#info-contents {
 
 div#status-pane {
   grid-area: status;
-  background: green;
+  background: white;
 }
 
 div#status-contents {
@@ -31,25 +35,36 @@ div#status-contents {
 
 div#opp-cap-pieces {
   grid-area: opp-cap-pieces;
-  background-color: black;
+  background: white;
 }
 
 div#ocp-table {
-
+  width: 100%;
 }
 
 div#board {
   grid-area: board;
-  background-color: red;
+  background: white;
 }
 
 div#board-table {
-
+  width: 100%;
 }
+
+td {
+  width: 5%;
+  height: 5%;
+  border: 1px solid black;
+  
+}
+
+/*td:hover {
+  background: black;
+}*/
 
 div#your-cap-pieces {
   grid-area: your-cap-pieces;
-  background-color: grey;
+  background: white;
 }
 
 div#ycp-table {
@@ -58,9 +73,13 @@ div#ycp-table {
 
 div#reference-pane {
   grid-area: reference;
-  background-color: yellow;
+  background: white;
 }
 
 div#reference-contents {
 
+}
+
+.red {
+  background: red;
 }
