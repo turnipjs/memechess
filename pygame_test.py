@@ -1,5 +1,5 @@
 import pygame
-from datamodel import game, pawn
+from datamodel import game, pawn, rook
 
 SQUARE_SIZE=50
 
@@ -7,12 +7,12 @@ pygame.init()
 screen = pygame.display.set_mode((20*SQUARE_SIZE, 20*SQUARE_SIZE))
 
 board = game.Game()
-a=pawn.Pawn(board, (5, 5, 0), game.Color.BLACK)
+a=rook.Rook(board, (7, 7, 0), game.Color.BLACK)
 board.add_piece(a)
 b=pawn.Pawn(board, (6, 4, 0), game.Color.WHITE)
 board.add_piece(b)
 
-SELECTED_PIECE = b
+SELECTED_PIECE = a
 
 font = pygame.font.SysFont("monospace", 16)
 
