@@ -2,7 +2,6 @@ from .piece import Piece
 from .pawn import Pawn
 from .game import Action, MoveResult
 
-
 class Bishop(Pawn):
     def get_actions(self):
         actions = []

@@ -1,5 +1,5 @@
 import pygame
-from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman
+from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman, beekeeper
 
 SQUARE_SIZE=40
 
@@ -16,11 +16,13 @@ board.add_piece(portal.PortalEntrance(board, (10, 10, 0), game.Color.WHITE, b))
 board.add_piece(pawn.Pawn(board, (10, 7, 0), game.Color.BLACK))
 board.add_piece(bowman.Bowman(board, (7, 8, 0), game.Color.BLACK))
 
+board.add_piece(beekeeper.Beekeeper(board, (0, 8, 0), game.Color.WHITE))
+
 [board.add_piece(i) for i in portal.make_cave_pair(board, (13, 13, 0), (2, 2, 0))]
 
 selected_piece = a
 
-font = pygame.font.SysFont("monospace", 12)
+font = pygame.font.SysFont("monospace", 14)
 
 run = True
 while run:
@@ -51,9 +53,6 @@ while run:
 						print("apply")
 						selected_piece.apply_action(action)
 						break
-				# input()
-			# print("done, p=", pressed, "mx, my = ", mx, my)
-			# input()
 			
 	screen.fill((0,0,0))
 
@@ -70,8 +69,8 @@ while run:
 	actions = selected_piece.get_actions()
 	print("\n"*100)
 	for i, action in enumerate(actions):
-		screen.blit(font.render(action.name+"["+str(i)+"]", False, (200,200,200)),
-			(action.x*SQUARE_SIZE, (action.y*SQUARE_SIZE)+10))
+		screen.blit(font.render(action.name, False, (200,200,200)),
+			(action.x*SQUARE_SIZE, (action.y*SQUARE_SIZE)+10+(10 if "_" in action.name else 0)))
 	print("\n".join(str(s) for s in board.pieces))
 
 	pygame.display.flip()
