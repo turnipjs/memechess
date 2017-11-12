@@ -1,5 +1,5 @@
 import pygame
-from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman, beekeeper
+from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman, beekeeper, knight
 
 
 SQUARE_SIZE=50
