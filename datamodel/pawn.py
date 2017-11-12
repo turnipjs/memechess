@@ -19,7 +19,6 @@ class Pawn(Piece):
 
 		return actions
 
-
 	def apply_action(self, action):
 		if action.name == "move_capture":
 			self.game.get_piece_at((action.x, action.y, action.z)).die()
