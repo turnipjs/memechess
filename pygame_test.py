@@ -1,22 +1,22 @@
 import pygame
-from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman
+from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, knight
 
-SQUARE_SIZE=40
+SQUARE_SIZE=50
 
 pygame.init()
 screen = pygame.display.set_mode((20*SQUARE_SIZE, 20*SQUARE_SIZE))
 
 board = game.Game()
-a=pope.Pope(board, (5, 5, 0), game.Color.WHITE)
+a=knight.Knight(board, (5, 5, 0), game.Color.WHITE)
 board.add_piece(a)
 b=portal.PortalExit(board, (6, 3, 0), game.Color.WHITE)
 board.add_piece(b)
 
 board.add_piece(portal.PortalEntrance(board, (10, 10, 0), game.Color.WHITE, b))
 board.add_piece(pawn.Pawn(board, (10, 7, 0), game.Color.BLACK))
-board.add_piece(bowman.Bowman(board, (7, 8, 0), game.Color.BLACK))
 
 [board.add_piece(i) for i in portal.make_cave_pair(board, (13, 13, 0), (2, 2, 0))]
+[board.add_piece(i) for i in portal.make_cave_pair(board, (13, 13, 1), (2, 2, 1))]
 
 selected_piece = a
 
