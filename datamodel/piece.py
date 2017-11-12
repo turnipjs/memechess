@@ -31,3 +31,6 @@ class Piece:
 
 	def step_move_into(self, peice, pos, direction):
 		raise NotImplemented()
+
+	def on_owner_turn_start(self):
+		pass
