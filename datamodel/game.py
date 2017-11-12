@@ -8,6 +8,11 @@ class Color(enum.Enum):
 	BLACK=1
 	WHITE=2
 
+	def opposite(self):
+		if self==self.WHITE:
+			return self.BLACK
+		return self.WHITE
+
 #MoveResult = collections.namedtuple("MoveResult", ["type", "pos"])
 class MoveResult:
 	class Type(enum.Enum):
@@ -59,7 +64,7 @@ class Game:
 	def is_valid_full_enemy_space(self, pos, my_color):
 		if self.valid_location(pos):
 			if self.has_piece(pos):
-				return self.get_piece_at(pos).color != my_color
+				return self.get_piece_at(pos).color == my_color.opposite()
 		return False
 
 	def add_piece(self, piece):
@@ -79,3 +84,8 @@ class Game:
 				else:
 					return MoveResult(MoveResult.Type.INVALID, 0)
 		return MoveResult(MoveResult.Type.INVALID, 0)
+
+	def start_turn(self, color):
+		for piece in self.pieces:
+			if piece.color == color:
+				piece.on_owner_turn_start()
