@@ -1,7 +1,7 @@
 import pygame
-from datamodel import game, pawn, rook, bishop, queen, portal, king, pope
+from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman
 
-SQUARE_SIZE=50
+SQUARE_SIZE=40
 
 pygame.init()
 screen = pygame.display.set_mode((20*SQUARE_SIZE, 20*SQUARE_SIZE))
@@ -14,6 +14,7 @@ board.add_piece(b)
 
 board.add_piece(portal.PortalEntrance(board, (10, 10, 0), game.Color.WHITE, b))
 board.add_piece(pawn.Pawn(board, (10, 7, 0), game.Color.BLACK))
+board.add_piece(bowman.Bowman(board, (7, 8, 0), game.Color.BLACK))
 
 [board.add_piece(i) for i in portal.make_cave_pair(board, (13, 13, 0), (2, 2, 0))]
 
