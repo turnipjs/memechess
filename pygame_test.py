@@ -6,17 +6,30 @@ SQUARE_SIZE=50
 
 pygame.init()
 screen = pygame.display.set_mode((20*SQUARE_SIZE, 20*SQUARE_SIZE))
+ds
+king_spots = (19, 0, 0)
+queen_spot = (17, 1, 0)
+
+def turnwise_symmetry(original):
+	original = (19-original(1), 19-original(0), 0)
+	return original
 
 board = game.Game()
+
+pieces_and_locations = []
+
+'''
+for each_piece in pieces_and_locations:
+	board.add_piece(board)
+	piece = piece 
+'''
+
 a=highrise.Highrise(board, (5, 5, 0), game.Color.WHITE)
 board.add_piece(a)
 b=highrise.Highrise(board, (6, 3, 0), game.Color.WHITE)
 board.add_piece(b)
 
-board.add_piece(portal.PortalEntrance(board, (10, 10, 0), game.Color.WHITE, b))
-board.add_piece(pawn.Pawn(board, (10, 7, 0), game.Color.BLACK))
 
-board.add_piece(beekeeper.Beekeeper(board, (0, 8, 0), game.Color.WHITE))
 
 [board.add_piece(i) for i in portal.make_cave_pair(board, (13, 13, 0), (2, 2, 0))]
 [board.add_piece(i) for i in portal.make_cave_pair(board, (13, 13, 1), (2, 2, 1))]
