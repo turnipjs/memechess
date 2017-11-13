@@ -69,7 +69,7 @@ function updateBoard(board) {
     eval(`var x = piece${i}.pos[0];`);
     eval("currentPiece = piece" + i + ";");
     console.log("current piece: " + currentPiece + " " + i);
-    var imghtml = "<img src='img/" + currentPiece.color + "-" + currentPiece.type + ".png' height='24px'>";
+    var imghtml = "<img src='img/" + currentPiece.color + "-" + currentPiece.type + ".png' height='28px'>";
     var targetTag = "td#" + y + "-" + x;
     console.log("target Tag: " + targetTag);
     console.log("html: " + imghtml);
@@ -128,6 +128,33 @@ function requestLoop() {
         ["move", 10, 10, 0]
         ["move", 13, 11, 0]
         ["move", 10, 14, 0]
+      ]
+    }, {
+      type: "car-bomb",
+      color: "WHITE",
+      pos: [12, 7, 0],
+      moves: [
+        ["move_capture", 12, 7, 0],
+        ["move", 5, 4, 0],
+        ["move", 6, 5, 0]
+      ]
+    }, {
+      type: "geopolitical-advisor",
+      color: "WHITE",
+      pos: [17, 15, 0],
+      moves: [
+        ["move_capture", 5, 5, 0],
+        ["move", 5, 4, 0],
+        ["move", 6, 5, 0]
+      ]
+    }, {
+      type: "Wall-2",
+      color: "WHITE",
+      pos: [8, 13, 0],
+      moves: [
+        ["move_capture", 5, 5, 0],
+        ["move", 5, 4, 0],
+        ["move", 6, 5, 0]
       ]
     }]
   };
