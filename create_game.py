@@ -58,8 +58,8 @@ def create():
 
 	return board
 
-def create():
-	board = game.Game()
-	board.add_piece(pope.Pope(board, (1,1,0), game.Color.WHITE))
-	board.add_piece(pawn.Pawn(board, (3,3,0), game.Color.BLACK))
-	return board
+# def create():
+# 	board = game.Game()
+# 	board.add_piece(pope.Pope(board, (1,1,0), game.Color.WHITE))
+# 	board.add_piece(pawn.Pawn(board, (3,3,0), game.Color.BLACK))
+# 	return board
