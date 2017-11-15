@@ -130,5 +130,7 @@ function setup(){
 			$("#status").text(data.color+"'s turn");
 		});
 		sock.emit("client_start", {"game_id":game_id, "color": color});
+
+		$("#status").text("Waiting for Opponent...");
 	});
 }
