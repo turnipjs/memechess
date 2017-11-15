@@ -1,1 +1,1 @@
-web: gunicorn pygame_test:app --log-file -
+web: gunicorn ws_server:app --log-file -
