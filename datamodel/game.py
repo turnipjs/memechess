@@ -47,6 +47,7 @@ class Game:
 		self.pieces = []
 
 	def get_piece_at(self, pos):
+		pos = tuple(pos)
 		for piece in self.pieces:
 			if piece.pos == pos:
 				return piece

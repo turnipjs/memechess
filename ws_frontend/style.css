@@ -48,10 +48,11 @@ table, td, tr{
 }
 
 #util-area{
-	float:right;
+	position: absolute;
+	left: 100vh;
 	top:0;
 }
 
-#util-area table,b{
-	float:right;
+#util-area table,b,div{
+	float:left;
 }

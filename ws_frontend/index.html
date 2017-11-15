@@ -4,10 +4,14 @@
 	<link rel="stylesheet" type="text/css" href="/f/style.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="/f/mappings.js"></script>
+	<script type="text/javascript" src="/f/socket.io.min.js"></script>
 	<script type="text/javascript" src="/f/main.js"></script>
 </head>
 <body onload="setup();" oncontextmenu="return false;">
 <div id="util-area">
+	<div>
+		<h1 id="status">Loading...</h1>
+	</div>
 	<div id="item-stack-container">
 		<b>Multiple items in the same x,y position. Select one:</b>
 		<br/>
