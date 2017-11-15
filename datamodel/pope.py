@@ -68,3 +68,10 @@ class Pope(King):
 
 	def __str__(self):
 		return f"<Pope {self.pos} {self.is_jetpack} {self.color} {self.attacking}:{self.attacking_turns_remaining}>"
+
+	def get_desc_text(self):
+		desc = "Jetpack: "+str(self.is_jetpack)
+		if self.attacking:
+			desc+="\nAttacking a "+self.attacking.identifier+" at "+str(self.attacking.pos)
+			desc+="\nAttack turns remaining: "+str(self.attacking_turns_remaining)
+		return desc

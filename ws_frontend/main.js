@@ -20,8 +20,12 @@ function setup(){
 		}
 
 		function display_moves(piece){
-			if (!(piece.color==color && is_my_turn)) return;
-			console.log("actions for: "+piece.identifier);
+			$("#selected-info").show();
+			$("#selected-info-box").empty();
+			$("#selected-info-box").append(piece.identifier+" at "+piece.pos);
+			piece.desc_text.split("\n").forEach(function(l){
+				$("#selected-info-box").append("<br/>"+l);
+			});
 			$(".move-info").remove();
 			piece.actions.forEach(function(action){
 				var action_div = $("<pre class='move-info'></pre>");
@@ -38,6 +42,10 @@ function setup(){
 				action_div.mousedown(function(e){
 					e.preventDefault();
 					if (e.which === 3) {
+						if (!(piece.color==color && is_my_turn)){
+							alert("Sorry, this is not your peice and/or it is not your turn.");
+							return;
+						}
 						apply_action(piece.pos[0], piece.pos[1], piece.pos[2], action.name, ax, ay, action.pos[2]);
 					}
 				});
@@ -57,7 +65,10 @@ function setup(){
 		}
 
 		function render_board(board_state){
+			$("#selected-info").hide();
 			$("#item-stack-container").hide();
+			$(".piece-image").off("cick");
+			$(".piece-image").off("mousedown");
 			var pieces_in_tiles = [];
 			$(".play-cell").empty();
 
@@ -127,7 +138,10 @@ function setup(){
 		sock.on("update_board", render_board);
 		sock.on("start_turn", function(data){
 			is_my_turn = data.color == color;
-			$("#status").text(data.color+"'s turn");
+			var s = data.color+"'s ";
+			if(is_my_turn) s+=" (Your)";
+			s+= " Turn.";
+			$("#status").text(s);
 		});
 		sock.emit("client_start", {"game_id":game_id, "color": color});
 

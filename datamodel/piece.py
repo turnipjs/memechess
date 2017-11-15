@@ -37,7 +37,7 @@ class Piece:
 	def on_owner_turn_start(self):
 		pass
 		
-	def get_2nd_text(self): return ""
+	def get_desc_text(self): return ""
 
 	def to_json(self):
 		return {
@@ -46,6 +46,7 @@ class Piece:
 			"color": self.color.to_json_string(),
 			"frozen": self.frozen,
 			"actions": [a.to_json() for a in self.get_actions()],
+			"desc_text": self.get_desc_text(),
 			**self.get_extra_json()
 		}
 

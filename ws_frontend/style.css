@@ -52,7 +52,3 @@ table, td, tr{
 	left: 100vh;
 	top:0;
 }
-
-#util-area table,b,div{
-	float:left;
-}

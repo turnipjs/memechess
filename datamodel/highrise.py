@@ -42,4 +42,4 @@ class Highrise(Piece):
         if action.name == "move" or action.name == "move_capture" or action.name == "stack":
             self.pos = action[1:]
 
-    def get_2nd_text(self): return str(self.levels)
+    def get_desc_text(self): return "Levels: "+str(self.levels)
