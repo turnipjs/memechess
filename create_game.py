@@ -57,3 +57,9 @@ def create():
 		[board.add_piece(i) for i in portal.make_cave_pair(board, (6, 9, i), (13, 9, i))]
 
 	return board
+
+def create():
+	board = game.Game()
+	board.add_piece(pope.Pope(board, (1,1,0), game.Color.WHITE))
+	board.add_piece(pawn.Pawn(board, (3,3,0), game.Color.BLACK))
+	return board

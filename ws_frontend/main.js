@@ -4,75 +4,107 @@ function setup(){
 		child = $("<tr></tr>");
 		table.append(child);
 		for(x=0;x<20;x++){
-			child.append($("<td id=\"cell-"+x+"-"+y+"\"><pre id=\"move-"+x+"-"+y+"\" class='move-info'></pre><img id=\"img-"+x+"-"+y+"\" class='piece-image'/></td>"));
-			set_tile(x, y, null);
+			child.append($("<td class='play-cell' id=\"cell-"+x+"-"+y+"\"></td>"));
 		}
 	}
 
-	function get_tile(x, y){
-		return $("#img-"+x+"-"+y);
+	function get_cell(x, y){
+		return $("#cell-"+x+"-"+y);
 	}
 
-	function get_move_slot(x, y){
-		return $("#move-"+x+"-"+y);
-	}
-
-	function set_tile(x, y, path){
-		if (path==null){
-			path="/i/blank.bmp";
-		}
-		get_tile(x, y).attr("src", path);
-	}
-
-	function clear_actions(){
-		for(y=0;y<20;y++){
-			for(x=0;x<20;x++){
-				get_move_slot(x, y).text("");
-				get_move_slot(x, y).css("background-color", "rgba(0,0,0,0)");
-				// get_move_slot(x, y).off("click");
-				get_move_slot(x, y).off("mousedown");
+	function display_moves(piece){
+		console.log("actions for: "+piece.identifier);
+		$(".move-info").remove();
+		piece.actions.forEach(function(action){
+			var action_div = $("<pre class='move-info'></pre>");
+			var ax = action.pos[0];
+			var ay = action.pos[1];
+			get_cell(ax, ay).append(action_div);
+			var desc = action_mappings[action.name];
+			if (desc==undefined){
+				console.log("NO ACTION MAPPING: "+action.name);
+				desc = {"name":"?"+action.name+"?", "color":[0,0,0]};
 			}
-		}
-	}
-
-	function render_board(board_state){
-		clear_actions();
-		for(y=0;y<20;y++){
-			for(x=0;x<20;x++){
-				set_tile(x, y, null);
-			}
-		}
-
-		board_state.pieces.forEach(function(piece){
-			var px = piece.pos[0];
-			var py = piece.pos[1];
-			if (piece_mappings[piece.identifier]==undefined){
-				console.log("NO PIECE MAPPING: "+piece.identifier);
-				return;
-			}
-			set_tile(px, py, "/i/"+piece_mappings[piece.identifier](piece));
-			get_move_slot(px, py).click(function(e){
-				clear_actions();
-				piece.actions.forEach(function(action){
-					var ax = action.pos[0];
-					var ay = action.pos[1];
-					var desc = action_mappings[action.name];
-					if (desc==undefined){
-						console.log("NO ACTION MAPPING: "+action.name);
-						desc = {"name":"?"+action.name+"?", "color":[0,0,0]};
-					}
-					get_move_slot(ax, ay).text(desc.name);
-					get_move_slot(ax, ay).css("background-color", "rgba("+desc.color.join(",")+",0.4)");
-					get_move_slot(ax, ay).mousedown(function(e){
-						e.preventDefault();
-						if (e.which === 3) {
-							$.getJSON("/api/apply_action/1/"+px+"/"+py+"/"+piece.pos[2]+"/"+action.name+"/"+ax+"/"+ay+"/"+action.pos[2], render_board);
-						}
-					});
-				});
+			action_div.text(desc.name);
+			action_div.css("background-color", "rgba("+desc.color.join(",")+",0.4)");
+			action_div.mousedown(function(e){
+				e.preventDefault();
+				if (e.which === 3) {
+					apply_action(piece.pos[0], piece.pos[1], piece.pos[2], action.name, ax, ay, action.pos[2]);
+				}
 			});
 		});
 	}
 
+	function draw_piece(container, piece){
+		container.empty();
+		var px = piece.pos[0];
+		var py = piece.pos[1];
+		if (piece_mappings[piece.identifier]==undefined){
+			console.log("NO PIECE MAPPING: "+piece.identifier);
+			return;
+		}
+
+		container.append("<img class='piece-image' src='/i/"+piece_mappings[piece.identifier](piece)+"'>");
+	}
+
+	function render_board(board_state){
+		$("#item-stack-container").hide();
+		var pieces_in_tiles = [];
+		$(".play-cell").empty();
+
+		for(y=0;y<20;y++){
+			var l = [];
+			pieces_in_tiles.push(l);
+			for(x=0;x<20;x++){
+				l.push([]);
+				get_cell(x, y).empty();
+				get_cell(x, y).append("<img class='piece-image' src='/i/blank.bmp'>");
+			}
+		}
+
+		function get_in(x, y){
+			return pieces_in_tiles[y][x];
+		}
+
+		board_state.pieces.forEach(function(piece){
+			get_in(piece.pos[0], piece.pos[1]).push(piece);
+			get_in(piece.pos[0], piece.pos[1]).sort((a, b) => a.pos[2]>b.pos[2])
+		});
+
+		for(y=0;y<20;y++){
+			for(x=0;x<20;x++){
+				var l = get_in(x, y);
+				if (l.length!=0){
+					console.log(l[l.length-1]);
+					draw_piece(get_cell(x, y), l[l.length-1]);
+					get_cell(x, y).click(function(l){return function(e){
+						$("#item-stack-container").hide();
+						if(l.length==1){
+							display_moves(l[l.length-1]);
+						}else{
+							$("#item-stack-container").show();
+							$("#item-stack").empty();
+							l.forEach(function(p){
+								var cell = $("<td></td>");
+								draw_piece(cell, p);
+								cell.click(function(e){
+									display_moves(p);
+								});
+								var row = $("<tr></tr>");
+								row.append(cell);
+								$("#item-stack").append(row);
+							});
+						}
+					}}(l));
+				}
+			}
+		}
+	}
+
 	$.getJSON("/api/get_board_state/1", render_board);
+
+	function apply_action(px, py, pz, name, ax, ay, az){
+		$.getJSON("/api/apply_action/1/"+px+"/"+py+"/"+pz+"/"+name+"/"+ax+"/"+ay+"/"+az, render_board);
+	}
 }
