@@ -3,6 +3,8 @@ from .game import Action, MoveResult, Game
 
 
 class Wall(King):
+    identifier = "wall"
+    
     def __init__(self, game, pos, color):
         King.__init__(self, game, pos, color)
         self.health = 1

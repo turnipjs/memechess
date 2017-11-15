@@ -2,6 +2,8 @@ from .piece import Piece
 from .game import Action, MoveResult
 
 class Bowman(Piece):
+    identifier = "bowman"
+    
     def _get_actions(self):
         actions = []
         for vector in ((0, 1, 0), (1, 0, 0), (1, 1, 0), (0, -1, 0), (-1, 0, 0),

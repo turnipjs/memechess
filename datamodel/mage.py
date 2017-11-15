@@ -2,6 +2,8 @@ from .piece import Piece
 from .game import Action, MoveResult
 
 class Mage(Piece):
+  identifier = "mage"
+  
     def __init__(self, game, pos, color):
         Piece.__init__(self, game, pos, color)
         self.attacking = None

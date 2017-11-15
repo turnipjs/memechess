@@ -3,6 +3,8 @@ from .game import Action, Color, MoveResult
 
 
 class Pawn(Piece):
+	identifier = "pawn"
+	
 	def _get_actions(self):
 		if self.color == Color.WHITE:
 			direction = -1

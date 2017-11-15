@@ -3,6 +3,8 @@ from .queen import Queen
 from .game import Action, MoveResult
 
 class Pope(King):
+	identifier = "pope"
+	
 	def __init__(self, game, pos, color):
 		King.__init__(self, game, pos, color)
 		self.is_jetpack = False
@@ -13,9 +15,9 @@ class Pope(King):
 		if self.attacking:
 			return []
 		if not self.is_jetpack:
-			return King.get_actions(self) + [Action("pray_for_jetpack", *self.pos)]
+			return King._get_actions(self) + [Action("pray_for_jetpack", *self.pos)]
 		else:
-			actions = [action for action in Queen.get_actions(self) if action.name!="move_capture"]
+			actions = [action for action in Queen._get_actions(self) if action.name!="move_capture"]
 			enemies = []
 			to_remove = set()
 			for action in actions:

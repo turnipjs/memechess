@@ -3,6 +3,8 @@ from .pawn import Pawn
 from .game import Action, MoveResult
 
 class Rook(Pawn):
+	identifier = "rook"
+	
 	def _get_actions(self):
 		actions = []
 		for vector in ((0, 1, 0), (1, 0, 0), (0, -1, 0), (-1, 0, 0)):

@@ -2,6 +2,7 @@ from .piece import Piece
 from .game import Action, MoveResult, Color
 
 class PortalExit(Piece):
+	identifier = "portal_exit"
 	can_capture = False
 
 	def _get_actions(self):
@@ -20,6 +21,7 @@ class PortalExit(Piece):
 			self.pos = action[1:]
 
 class PortalEntrance(PortalExit):
+	identifier = "portal_entrance"
 	can_land_on = True
 	preserves_speed = False
 
@@ -35,6 +37,7 @@ class PortalEntrance(PortalExit):
 			return MoveResult(MoveResult.Type.REGULAR, end_point, ends_motion = not self.preserves_speed)
 
 class CavePortal(PortalEntrance):
+	identifier = "cave_portal"
 	preserves_speed = True
 	can_be_captured = False
 

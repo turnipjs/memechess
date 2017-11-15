@@ -35,30 +35,30 @@ board = game.Game()
 
 pieces_and_locations = []
 
-#pieces_and_locations.append(king.King(board, king_coords, game.Color.WHITE))
-pieces_and_locations.append(king.King(board, turnwise_symmetry(king_coords), game.Color.BLACK))
+# #pieces_and_locations.append(king.King(board, king_coords, game.Color.WHITE))
+# pieces_and_locations.append(king.King(board, turnwise_symmetry(king_coords), game.Color.BLACK))
 
-pieces_and_locations.append(queen.Queen(board, queen_coords, game.Color.WHITE))
-pieces_and_locations.append(queen.Queen(board, turnwise_symmetry(queen_coords), game.Color.BLACK))
+# pieces_and_locations.append(queen.Queen(board, queen_coords, game.Color.WHITE))
+# pieces_and_locations.append(queen.Queen(board, turnwise_symmetry(queen_coords), game.Color.BLACK))
 
-pieces_and_locations.append(pope.Pope(board, pope_coords, game.Color.WHITE))
-pieces_and_locations.append(pope.Pope(board, turnwise_symmetry(pope_coords), game.Color.BLACK))
+# pieces_and_locations.append(pope.Pope(board, pope_coords, game.Color.WHITE))
+# pieces_and_locations.append(pope.Pope(board, turnwise_symmetry(pope_coords), game.Color.BLACK))
 
-for i in pawn_coords:
-	pieces_and_locations.append(pawn.Pawn(board, i, game.Color.WHITE))
-	pieces_and_locations.append(pawn.Pawn(board, turnwise_symmetry(i), game.Color.BLACK))
+# for i in pawn_coords:
+# 	pieces_and_locations.append(pawn.Pawn(board, i, game.Color.WHITE))
+# 	pieces_and_locations.append(pawn.Pawn(board, turnwise_symmetry(i), game.Color.BLACK))
 
-for i in bishop_coords:
-	pieces_and_locations.append(bishop.Bishop(board, i, game.Color.WHITE))
-	pieces_and_locations.append(bishop.Bishop(board, turnwise_symmetry(i), game.Color.BLACK))
+# for i in bishop_coords:
+# 	pieces_and_locations.append(bishop.Bishop(board, i, game.Color.WHITE))
+# 	pieces_and_locations.append(bishop.Bishop(board, turnwise_symmetry(i), game.Color.BLACK))
 
-for i in knight_coords:
-	pieces_and_locations.append(knight.Knight(board, i, game.Color.WHITE))
-	pieces_and_locations.append(knight.Knight(board, turnwise_symmetry(i), game.Color.BLACK))
+# for i in knight_coords:
+# 	pieces_and_locations.append(knight.Knight(board, i, game.Color.WHITE))
+# 	pieces_and_locations.append(knight.Knight(board, turnwise_symmetry(i), game.Color.BLACK))
 
-for i in rook_coords:
-	pieces_and_locations.append(rook.Rook(board, turnwise_symmetry(i), game.Color.WHITE))
-	pieces_and_locations.append(rook.Rook(board, i, game.Color.BLACK))
+# for i in rook_coords:
+# 	pieces_and_locations.append(rook.Rook(board, turnwise_symmetry(i), game.Color.WHITE))
+# 	pieces_and_locations.append(rook.Rook(board, i, game.Color.BLACK))
 
 
 

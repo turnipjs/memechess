@@ -5,6 +5,8 @@ from .game import Action, MoveResult, Game
 
 
 class Highrise(Piece):
+    identifier = "highrise"
+    
     def __init__(self, game, pos, color):
         Piece.__init__(self, game, pos, color)
         self.levels = 1

@@ -1,5 +1,6 @@
 
 class Piece:
+	identifier = ""
 	can_land_on = False
 	can_capture = True
 	can_be_captured = True
@@ -37,3 +38,16 @@ class Piece:
 		pass
 		
 	def get_2nd_text(self): return ""
+
+	def to_json(self):
+		return {
+			"identifier": self.identifier,
+			"pos": list(self.pos),
+			"color": self.color.to_json_string(),
+			"frozen": self.frozen,
+			"actions": [a.to_json() for a in self.get_actions()],
+			**self.get_extra_json()
+		}
+
+	def get_extra_json(self):
+		return {}

@@ -5,6 +5,8 @@ from .queen import Queen
 import random
 
 class Beekeeper(Piece):
+	identifier = "beekeeper"
+	
 	def _get_actions(self):
 		actions = [Action("release_swarm", *self.pos)]
 		for vector in ((0, 1, 0), (1, 0, 0), (1, 1, 0), (0, -1, 0), (-1, 0, 0),

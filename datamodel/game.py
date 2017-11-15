@@ -1,7 +1,12 @@
 import enum
 import collections
 
-Action = collections.namedtuple("Action", ["name", "x", "y", "z"])
+class Action(collections.namedtuple("Action", ["name", "x", "y", "z"])):
+	def to_json(self):
+		return {
+			"name": self.name,
+			"pos": self[1:]
+		}
 
 class ILLEGALPOS_OOB:pass
 class ILLEGALPOS_FULL:pass
@@ -15,6 +20,11 @@ class Color(enum.Enum):
 		if self==self.WHITE:
 			return self.BLACK
 		return self.WHITE
+
+	def to_json_string(self):
+		if self==self.WHITE: return "WHITE"
+		if self==self.BLACK: return "BLACK"
+		return "NONE"
 
 #MoveResult = collections.namedtuple("MoveResult", ["type", "pos"])
 class MoveResult:
@@ -92,3 +102,8 @@ class Game:
 		for piece in self.pieces:
 			if piece.color == color:
 				piece.on_owner_turn_start()
+
+	def to_json(self):
+		return {
+			"pieces": [p.to_json() for p in self.pieces]
+		}
