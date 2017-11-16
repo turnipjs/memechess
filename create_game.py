@@ -16,7 +16,7 @@ def create():
 	bishop_coords = [(0, 15, 0), (1, 15, 0), (4, 19, 0), (4, 18, 0)]
 	knight_coords = [(10, 18, 0), (1, 10, 0)]
 	rook_coords = [(16, 0, 0), (19, 3, 0)]
-	beekeeper_coords = []
+	beekeeper_coords = [(14, 19, 0), (19, 14, 0)]
 	bowman_coords = []
 	mage_coords = []
 
@@ -28,8 +28,8 @@ def create():
 	pieces_and_locations.append(queen.Queen(board, queen_coords, game.Color.WHITE))
 	pieces_and_locations.append(queen.Queen(board, turnwise_symmetry(queen_coords), game.Color.BLACK))
 
-	pieces_and_locations.append(pope.Pope(board, pope_coords, game.Color.WHITE))
-	pieces_and_locations.append(pope.Pope(board, turnwise_symmetry(pope_coords), game.Color.BLACK))
+	# pieces_and_locations.append(pope.Pope(board, pope_coords, game.Color.WHITE))
+	# pieces_and_locations.append(pope.Pope(board, turnwise_symmetry(pope_coords), game.Color.BLACK))
 
 	for i in pawn_coords:
 		pieces_and_locations.append(pawn.Pawn(board, i, game.Color.WHITE))
@@ -46,6 +46,10 @@ def create():
 	for i in rook_coords:
 		pieces_and_locations.append(rook.Rook(board, turnwise_symmetry(i), game.Color.WHITE))
 		pieces_and_locations.append(rook.Rook(board, i, game.Color.BLACK))
+
+	for i in beekeeper_coords:
+		pieces_and_locations.append(beekeeper.Beekeeper(board, turnwise_symmetry(i), game.Color.WHITE))
+		pieces_and_locations.append(beekeeper.Beekeeper(board, i, game.Color.BLACK))
 
 	for each_piece in pieces_and_locations:
 		board.add_piece(each_piece)

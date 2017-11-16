@@ -10,6 +10,7 @@ var piece_mappings={
 	"king": simple("King"),
 	"knight": simple("Knight"),
 	"pope": simple("Pope"),
+	"beekeeper": simple("Tower-Poly"),
 	"cave_portal": () => "BLACK-Wall-2.png"
 }
 
