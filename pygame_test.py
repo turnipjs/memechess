@@ -124,7 +124,7 @@ while run:
 			((piece.x*SQUARE_SIZE)+1, (piece.y*SQUARE_SIZE)+1, SQUARE_SIZE-2, SQUARE_SIZE-2), 0)
 		screen.blit(font.render(type(piece).__name__, False, (255,255,255)),
 			(piece.x*SQUARE_SIZE, piece.y*SQUARE_SIZE))
-		screen.blit(font.render(piece.get_2nd_text(), False, (255, 255, 255)),
+		screen.blit(font.render(piece.get_desc_text(), False, (255, 255, 255)),
 					(piece.x * SQUARE_SIZE, (piece.y * SQUARE_SIZE)+40))
 
 	actions = selected_piece.get_actions()

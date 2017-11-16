@@ -33,8 +33,8 @@ def create():
 	pieces_and_locations.append(queen.Queen(board, queen_coords, game.Color.WHITE))
 	pieces_and_locations.append(queen.Queen(board, turnwise_symmetry(queen_coords), game.Color.BLACK))
 
-	# pieces_and_locations.append(pope.Pope(board, pope_coords, game.Color.WHITE))
-	# pieces_and_locations.append(pope.Pope(board, turnwise_symmetry(pope_coords), game.Color.BLACK))
+	pieces_and_locations.append(pope.Pope(board, pope_coords, game.Color.WHITE))
+	pieces_and_locations.append(pope.Pope(board, turnwise_symmetry(pope_coords), game.Color.BLACK))
 
 	for i in pawn_coords:
 		pieces_and_locations.append(pawn.Pawn(board, i, game.Color.WHITE))
@@ -58,6 +58,10 @@ def create():
 
 	for each_piece in pieces_and_locations:
 		board.add_piece(each_piece)
+
+	p1 = portal.PortalExit(board, (2, 2, 0), game.Color.WHITE)
+	p2 = portal.PortalEntrance(board, (2, 3, 0), game.Color.WHITE, p1)
+	[board.add_piece(p) for p in (p1, p2)]
 
 	for i in range(0, 7):
 		[board.add_piece(i) for i in portal.make_cave_pair(board, (9, 6, i), (9, 13, i))]
