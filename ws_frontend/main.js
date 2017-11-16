@@ -4,6 +4,7 @@ function setup(){
 	var color = parts[parts.length-1].toUpperCase();
 	var is_my_turn = false;
 	var is_both = false;
+	var is_free = false;
 
 	var curr_dragged_over = null;
 
@@ -14,7 +15,11 @@ function setup(){
 			child = $("<tr></tr>");
 			table.append(child);
 			for(x=0;x<20;x++){
-				child.append($("<td data-x='"+x+"' data-y='"+y+"' class='play-cell' id=\"cell-"+x+"-"+y+"\"></td>"));
+				var c = $("<td data-x='"+x+"' data-y='"+y+"' class='play-cell' id=\"cell-"+x+"-"+y+"\"></td>");
+				c.on("mouseover", function(x, y){return function(e){
+					$("#curr-over-info").text(x+","+y);
+				}}(x, y));
+				child.append(c);
 			}
 		}
 
@@ -165,7 +170,7 @@ function setup(){
 		// }
 
 		function apply_action(piece, name, ax, ay, az){
-			if (!(piece.color==color && is_my_turn)){
+			if ((!(piece.color==color && is_my_turn)) && !is_free){
 				alert("Sorry, this is not your peice and/or it is not your turn.");
 				return;
 			}
@@ -189,8 +194,9 @@ function setup(){
 
 		if(color=="WHITE" || color=="BLACK"){
 			sock.emit("client_start", {"game_id":game_id, "color": color});
-		}else if (color=="BOTH"){
+		}else if (color=="BOTH" || color=="FREE"){
 			is_both = true;
+			is_free = color=="FREE";
 			sock.emit("client_start", {"game_id":game_id, "color": "WHITE"});
 			sock.emit("client_start", {"game_id":game_id, "color": "BLACK"});
 		}else{

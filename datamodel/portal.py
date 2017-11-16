@@ -41,6 +41,9 @@ class CavePortal(PortalEntrance):
 	preserves_speed = True
 	can_be_captured = False
 
+	def _get_actions(self):
+		return []
+
 def make_cave_pair(game, pos1, pos2):
 	a = CavePortal(game, pos1, Color.NONE, None)
 	b = CavePortal(game, pos2, Color.NONE, a)

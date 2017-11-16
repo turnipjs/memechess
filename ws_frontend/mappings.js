@@ -11,7 +11,8 @@ var piece_mappings={
 	"knight": simple("Knight"),
 	"pope": simple("Pope"),
 	"beekeeper": simple("Tower-Poly"),
-	"cave_portal": () => "BLACK-Wall-2.png"
+	"cave_portal": () => "WHITE-Tower-Star.png",
+	"wall": () => "BLACK-Tower-Square.png"
 }
 
 var action_mappings = {

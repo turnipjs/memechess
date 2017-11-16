@@ -1,4 +1,4 @@
-from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman, beekeeper, knight, highrise
+from datamodel import game, pawn, rook, bishop, queen, portal, king, pope, bowman, beekeeper, knight, highrise, wall
 
 def turnwise_symmetry(original):
 	base = (19-original[0], 19-original[1], 0)
@@ -21,6 +21,11 @@ def create():
 	mage_coords = []
 
 	pieces_and_locations = []
+
+	cave_block_coords = []
+	for xo in range(6):
+		for yo in range(6):
+			pieces_and_locations.append(wall.NoMoveWall(board, (7+xo, 7+yo, 0), game.Color.NONE))
 
 	pieces_and_locations.append(king.King(board, king_coords, game.Color.WHITE))
 	pieces_and_locations.append(king.King(board, turnwise_symmetry(king_coords), game.Color.BLACK))

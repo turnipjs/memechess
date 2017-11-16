@@ -8,7 +8,7 @@ class Wall(King):
     def __init__(self, game, pos, color):
         King.__init__(self, game, pos, color)
         self.health = 1
-    def get_actions(self):
+    def _get_actions(self):
         actions = []
 
         for vector in ((0, 1, 0), (1, 0, 0), (1, 1, 0), (0, -1, 0), (-1, 0, 0), (-1, -1, 0), (1, -1, 0), (-1, 1, 0)):
@@ -19,3 +19,10 @@ class Wall(King):
                 actions.append(Action("move_capture", *res.pos))
 
         return actions
+
+class NoMoveWall(Wall):
+    identifier = "wall"
+    can_be_captured = False
+
+    def _get_actions(self):
+        return []
