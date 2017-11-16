@@ -3,6 +3,9 @@ function setup(){
 	var game_id = parseInt(parts[parts.length-2]);
 	var color = parts[parts.length-1].toUpperCase();
 	var is_my_turn = false;
+	var is_both = false;
+
+	var curr_dragged_over = null;
 
 	var sock = io.connect('//' + document.domain + ':' + location.port);
 	sock.on("connect", function(){
@@ -11,7 +14,7 @@ function setup(){
 			child = $("<tr></tr>");
 			table.append(child);
 			for(x=0;x<20;x++){
-				child.append($("<td class='play-cell' id=\"cell-"+x+"-"+y+"\"></td>"));
+				child.append($("<td data-x='"+x+"' data-y='"+y+"' class='play-cell' id=\"cell-"+x+"-"+y+"\"></td>"));
 			}
 		}
 
@@ -19,14 +22,17 @@ function setup(){
 			return $("#cell-"+x+"-"+y);
 		}
 
+		var drag_moveset = [];
+
 		function display_moves(piece){
 			$("#selected-info").show();
 			$("#selected-info-box").empty();
-			$("#selected-info-box").append(piece.identifier+" at "+piece.pos);
+			$("#selected-info-box").append(piece.color + " " + piece.identifier+" at "+piece.pos);
 			piece.desc_text.split("\n").forEach(function(l){
 				$("#selected-info-box").append("<br/>"+l);
 			});
 			$(".move-info").remove();
+			drag_moveset=piece.actions;
 			piece.actions.forEach(function(action){
 				var action_div = $("<pre class='move-info'></pre>");
 				var ax = action.pos[0];
@@ -39,17 +45,33 @@ function setup(){
 				}
 				action_div.text(desc.name);
 				action_div.css("background-color", "rgba("+desc.color.join(",")+",0.4)");
+				action_div.on("dragenter", drag_over);
 				action_div.mousedown(function(e){
 					e.preventDefault();
 					if (e.which === 3) {
-						if (!(piece.color==color && is_my_turn)){
-							alert("Sorry, this is not your peice and/or it is not your turn.");
-							return;
-						}
-						apply_action(piece.pos[0], piece.pos[1], piece.pos[2], action.name, ax, ay, action.pos[2]);
+						apply_action(piece, action.name, ax, ay, action.pos[2]);
 					}
 				});
 			});
+		}
+
+		function apply_action_by_xy(piece, x, y){
+			$(".drag-hint").remove();
+			var ok = false;
+			drag_moveset.forEach(function(action){
+				if((action.pos[0]==x) && (action.pos[1]==y)){
+					ok=true;
+					apply_action(piece, action.name, x, y, action.pos[2]);
+				}
+			});
+			if (!ok) alert("Sorry, you can't move here");
+		}
+
+		function drag_over(e){
+			if(curr_dragged_over) $(".drag-hint").remove();
+			curr_dragged_over = $(e.target);
+			var o = $("<div class='drag-hint'></div>");
+			curr_dragged_over.parent().append(o);
 		}
 
 		function draw_piece(container, piece){
@@ -60,8 +82,17 @@ function setup(){
 				console.log("NO PIECE MAPPING: "+piece.identifier);
 				return;
 			}
+			var img = $("<img class='piece-image' src='/i/"+piece_mappings[piece.identifier](piece)+"'>");
+			container.append(img);
 
-			container.append("<img class='piece-image' src='/i/"+piece_mappings[piece.identifier](piece)+"'>");
+			curr_dragged_over = null;
+			img.on("dragstart", function(e){
+				display_moves(piece);
+			});
+			img.on("dragenter", drag_over);
+			img.on("dragend", function(e){
+				apply_action_by_xy(piece, parseInt(curr_dragged_over.parent().attr("data-x")), parseInt(curr_dragged_over.parent().attr("data-y")));
+			});
 		}
 
 		function render_board(board_state){
@@ -69,8 +100,10 @@ function setup(){
 			$("#item-stack-container").hide();
 			$(".piece-image").off("cick");
 			$(".piece-image").off("mousedown");
-			var pieces_in_tiles = [];
 			$(".play-cell").empty();
+			$(".drag-hint").remove()
+
+			var pieces_in_tiles = [];
 
 			for(y=0;y<20;y++){
 				var l = [];
@@ -115,6 +148,11 @@ function setup(){
 								});
 							}
 						}}(l));
+					}else{
+						get_cell(x, y).empty();
+						var img = $("<img class='piece-image' src='/i/blank.bmp'>");
+						get_cell(x, y).append(img);
+						img.on("dragenter", drag_over);
 					}
 				}
 			}
@@ -126,24 +164,39 @@ function setup(){
 		// 	$.getJSON("/api/apply_action/1/"+px+"/"+py+"/"+pz+"/"+name+"/"+ax+"/"+ay+"/"+az, render_board);
 		// }
 
-		function apply_action(px, py, pz, name, ax, ay, az){
+		function apply_action(piece, name, ax, ay, az){
+			if (!(piece.color==color && is_my_turn)){
+				alert("Sorry, this is not your peice and/or it is not your turn.");
+				return;
+			}
 			sock.emit("send_action", {
 				"game_id":game_id,
 				"name": name,
-				"piece": [px, py, pz],
+				"piece": piece.pos,
 				"pos": [ax, ay, az]
 			});
 		}
 
 		sock.on("update_board", render_board);
 		sock.on("start_turn", function(data){
+			if(is_both) color = data.color;
 			is_my_turn = data.color == color;
 			var s = data.color+"'s ";
 			if(is_my_turn) s+=" (Your)";
 			s+= " Turn.";
 			$("#status").text(s);
 		});
-		sock.emit("client_start", {"game_id":game_id, "color": color});
+
+		if(color=="WHITE" || color=="BLACK"){
+			sock.emit("client_start", {"game_id":game_id, "color": color});
+		}else if (color=="BOTH"){
+			is_both = true;
+			sock.emit("client_start", {"game_id":game_id, "color": "WHITE"});
+			sock.emit("client_start", {"game_id":game_id, "color": "BLACK"});
+		}else{
+			sock.emit("client_start", {"game_id":game_id, "color": "OBSERVE"});
+		}
+		
 
 		$("#status").text("Waiting for Opponent...");
 	});
